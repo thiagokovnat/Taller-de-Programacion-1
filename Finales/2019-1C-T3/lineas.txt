@@ -1,0 +1,4 @@
+auto amarillo
+veces llueve capital
+esta soleado
+Probando funcione programa

@@ -1,0 +1,80 @@
+2) a)extern long int** a;
+   b) int RESTA(int a, int b){return a-b;}
+   c) static char b;
+
+3) class Telefono{
+
+  std::vector<int> area;
+  std::vector<int> number;
+
+public:
+  Telefono(std::string area, std::string number);
+  Telefono(Telefono&& other);
+  Telefono(const Telefono& other);
+  bool operator==(const Telefono& other);
+  void operator=(const Telefono& other);
+  void operator<<(std::string number);
+  operator long();
+  void operator>>(){}
+
+};
+
+4) La compilacion condicional es una herramienta con la cual podemos compilar ciertas secciones de codigo dependiendo de una condicion. Durante el proceso de compilacion, se chequean estas condiciones y en caso de que evaluen a true, se compila el codigo encerrado en el if. Esto resulta particularmente util para evitar que ciertas secciones de codigo se compilen dos veces, como puede ser el caso de un .h. Estos archivos siempre deben comenzar con el llamado header guard, que basicamente evita que se compile dos veces el archivo dado que utiliza la compilacion condicional. Podemos observarlo en el siguiente codigo:
+
+#ifndef __COMPILE_H__
+#define __COMPILE_H__
+
+void funcionQueHaceAlgo(int a);
+
+#endif
+
+Durante el proceso de compilacion, se comprueba si esta definido __COMPILE_H__, como la primera vez esto evalua en true, se compila el codigo, incluido el #define __COMPILE_H__, que evita que el codigo se vuelva a compilar.
+
+5) Que una funcion sea bloqueante significa que el caller (quien hizo el llamado a la funcion) queda a la espera de que esta funcion termine su ejecucion para poder continuar. Esto generalmente en funciones cortas o rapidas no genera problemas, pero si la funcion es muy larga o depende de un evento externo (Ej. la funcion accept espera una conexion entrante) genera problemas ya que la ejecucion del programa queda a la espera de esto y no se podria continuar. Esto se puede subsanar pasando la ejecucion de esta funcion a otro hilo, lo cual haria que el programa siga corriendo mientras el otro hilo queda ejecutando la funcion que estaba bloqueando el programa. Luego, se puede hacer un join de los hilos cuando se lo requiera. Esto, por ejemplo, es de vital importancia para los servidores que atienden a multiples clientes, ya que si todo corriese en un mismo hilo, cualquier funcion que bloquea la ejecucion haria que el servidor no pueda responder a las peticiones de otros clientes.
+
+6) Los metodos virtuales puros son metodos que no tienen una implementación, sin embargo cuentan con una entrada en la tabla virtual de metodos de la clase. Su uso es para forzar a una clase que quiera ser instanciada (que no cuente con metodos puramente virtuales) a que tenga una implementacion de ese metodo, caso contrario seria una clase que no se podria instanciar.
+Un ejemplo puede ser una clase Animal que cuenta con un metodo hablar que es puramente virtual, esto forzaria a que toda clase que hereda de animal y quiera ser instanciada a darle una implementacion al metodo hablar.
+
+7) El polimorfismo hace referencia a que dos objetos de tipos distintos pueden recibir el mismo mensaje y tener una respuesta diferente hacia ese mensaje. Por ejemplo, supongamos una clase Cuadrado y otra clase Circulo, cada uno puede recibir exactamente el mismo mensaje getFormulaArea(), y su respuesta va a ser diferente dependiendo del tipo de la clase. Podemos ejemplificarlo mediante el siguiente codigo C++:
+
+class Animal{
+
+  virtual void hablar() = 0;
+};
+
+class Perro : public Animal{
+
+  void hablar() override{ std::cout << "Perro"<<std::endl;}
+};
+
+class Gato : public Animal{
+
+  void hablar() override{std::cout<<"Gato"<<std::endl;}
+};
+
+int main(){
+
+  Animal* animal = new Perro();
+  animal.hablar(); // Prints Perro
+  delete animal;
+  animal = new Gato();
+  animal.hablar(); // Prints Gato
+  delete animal;
+  return 0;
+}
+
+Podemos observar que la respuesta al mensaje varia dependiendo del tipo del objeto. En C++ esto se consigue mediante dynamic-dispatch, que genera que la decision de a que funcion se llama se hace en tiempo de ejecucion y depende del tipo del objeto y no del tipado (En este caso, Animal*)
+
+9) La funcion que se utiliza para esperar la terminacion de un thread es join(). Esta funcion lo que hace es que si la funcion que se estaba ejecutando en el otro hilo finalizo, une los hilos, pero en caso contrario aguarda la finalizacion de la funcion para unirlos.
+
+void imprimirAlgo(){
+...
+}
+int main(){
+
+  std::thread t1(&imprimirAlgo);
+  std::thread t2(&imprimirAlgo);
+  t1.join();  // Aguarda la terminacion de un t1
+  t2.join();  // Aguarda la terminacion de t2
+
+}

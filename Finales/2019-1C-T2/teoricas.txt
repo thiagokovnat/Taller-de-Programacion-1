@@ -1,0 +1,19 @@
+3) Explique que son los metodos virtuales y para que sirven. De un breve ejemplo donde su uso sea imprescindible.
+-) Los metodos virtuales son aquellos metodos que tienen una entrada en la tabla virtual de una clase. Lo que permite esto es que la decision de a que funcion llamar se lleva a cabo en tiempo de ejecucion (llamado Dynamic Dispatch). Esto a su vez nos permite que clases que hereden de una clase base pero sean referenciados bajo un puntero a la clase Padre puedan llamar a sus implementaciones de esos metodos en lugar de la implementacion de la clase Padre.
+Un ejemplo donde esto es esencial puede ser si tenemos una lista de punteros a una clase Animal, pero cada objeto en si es una instancia de un clase que hereda de Animal. Luego, si queremos hacer que cada animal hable podemos simplemente iterar la lista y llamar al metodo hablar de cada objeto. Como esto se resuelve en tiempo de ejecución, esa llamada llamará al metodo hablar de cada clase que hereda de Animal. Si este metodo no fuese virtual, la llamada seria decidida en tiempo de compilacion y siempre se llamaria al metodo hablar de animal ya que para el compilador, la lista es de punteros a animales.
+
+5) Explique que es la compilacion condicional. Ejemplifique mediante código.
+-) La compilacion condicional es una forma en la que se decide si una seccion de codigo va a ser compilada basandonos en una condicion. Esto, por ejemplo, es muy util para no incluir el mismo .h miles de veces. Estos .h hacen uso de la compilacion condicional para evitar que pase esto. Esto se puede ver en el siguiente ejemplo.
+#ifndef __LIBRERIA_H__
+#define __LIBRERIA_H__
+
+...
+
+#endif
+Todo lo que esta "encerrado" en el if se compilara unicamente si no esta definido __LIBRERIA_H__, como adentro de ese if se define __LIBRERIA_H__, esto hace imposible que se compile mas de una vez.
+
+8) ¿Que valor arroja sizeof(int)? Justifique.
+- El valor que arroja sizeof(int) depende totalmente de la arquitectura en la cual se este compilando el código. Si, por ejemplo, se trabajara en una arquitectura de 64 bits, sizeof(int) arrojaria 4, pero esto no es asi para otras arquitecturas, por lo cual el valor depende totalmente de la arquitectura donde se este compilando.
+
+9) Describa el concepto de loop de eventos utilizado en la programacion orientada a eventos.
+-) En la programacion orientada a eventos, el concepto de loop de eventos se refiere a un ciclo en el cual constantemente se estan manejando los eventos que recibe el programa. Este ciclo maneja estos eventos despachandolos a los handlers correspondientes para cada uno. Generalmente, el loop de eventos cuenta con una cola de eventos, donde los eventos son colocados, y la tarea del loop es ir sacando uno a uno los eventos que se encuentren en la cola y procesarlos llamando a sus correspondientes handlers (funciones que saben como ejecutar el evento en el modelo)

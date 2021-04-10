@@ -1,0 +1,5 @@
+1) Explique que es cada uno de los siguientes, haciendo referencia a su inicializacion, su comportamiento y el area de memoria donde residen.
+
+a) Una variable global static -> Una variable global static es una variable global que unicamente puede ser accedida en el modulo donde se la declara. Se inicializa cuando se la define, y su lifetime es del todo el programa. Reside en el data segment.
+b) Una variable local static -> Una variable que es local a una funcion, y debido al keyword static su valor se mantendra entre llamados a esa funcion. Su lifetime es el del programa ya que la variable reside en el data segment debido al keyword static. Se inicializa cuando se la define
+c) Un atributo de clase static -> Es un atributo que es comun para todos los objetos de una misma clase, se inicializa en la declaracion de la clase y su lifetime es de todo el programa. La variable reside en el data segment.
